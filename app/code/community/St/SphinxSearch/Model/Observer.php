@@ -1,6 +1,5 @@
-<?xml version="1.0"?>
-<!--
-/*
+<?php
+/**
  * Copyright 2015 Simen Thorsrud
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,15 +19,29 @@
  * @author      Simen Thorsrud <simen.thorsrud@gmail.com>
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
--->
-<config>
-  <modules>
-    <St_SphinxSearch>
-      <active>true</active>
-      <codePool>community</codePool>
-      <depends>
-        <Mage_CatalogSearch />
-      </depends>
-    </St_SphinxSearch>
-  </modules>
-</config>
+
+/**
+ * Class St_SphinxSearch_Model_Observer
+ */
+class St_SphinxSearch_Model_Observer
+{
+
+    /**
+     * This is run after catalogsearch_index_process_complete
+     *
+     * @event catalogsearch_index_process_complete
+     * @param Varien_Event_Observer $eventObserver
+     */
+    public function mageCatalogSearchIndexComplete(Varien_Event_Observer $eventObserver)
+    {
+
+        // @todo: check if this functionality is enabled
+
+        /** @var St_SphinxSearch_Model_Indexer $indexer */
+        $indexer = Mage::getModel('st_sphinxsearch/indexer');
+
+        $indexer->reindexAll();
+
+        return $this;
+    }
+}

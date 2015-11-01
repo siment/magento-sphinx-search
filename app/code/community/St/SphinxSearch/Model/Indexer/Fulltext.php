@@ -1,6 +1,5 @@
-<?xml version="1.0"?>
-<!--
-/*
+<?php
+/**
  * Copyright 2015 Simen Thorsrud
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,15 +19,11 @@
  * @author      Simen Thorsrud <simen.thorsrud@gmail.com>
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
--->
-<config>
-  <modules>
-    <St_SphinxSearch>
-      <active>true</active>
-      <codePool>community</codePool>
-      <depends>
-        <Mage_CatalogSearch />
-      </depends>
-    </St_SphinxSearch>
-  </modules>
-</config>
+
+/**
+ * Class St_SphinxSearch_Model_Indexer_Fulltext
+ */
+class St_SphinxSearch_Model_Indexer_Fulltext extends St_SphinxSearch_Model_Indexer
+{
+
+}

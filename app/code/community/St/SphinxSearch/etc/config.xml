@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!--
+/*
+ * Copyright 2015 Simen Thorsrud
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @category    St
+ * @package     St_SphinxSearch
+ * @author      Simen Thorsrud <simen.thorsrud@gmail.com>
+ * @license     http://www.apache.org/licenses/LICENSE-2.0
+ */
+-->
+<config>
+    <modules>
+        <St_SphinxSearch>
+            <version>0.0.1</version>
+        </St_SphinxSearch>
+    </modules>
+    <global>
+        <blocks>
+            <st_sphinxsearch>
+                <class>St_SphinxSearch_Block</class>
+            </st_sphinxsearch>
+        </blocks>
+        <models>
+            <st_sphinxsearch>
+                <class>St_SphinxSearch_Model</class>
+                <resourceModel>st_sphinxsearch_resource</resourceModel>
+            </st_sphinxsearch>
+        </models>
+        <resources>
+            <st_sphinxsearch_setup>
+                <setup>
+                    <module>St_SphinxSearch</module>
+                    <class>St_SphinxSearch_Model_Resource_Setup</class>
+                </setup>
+            </st_sphinxsearch_setup>
+        </resources>
+        <events>
+            <catalogsearch_index_process_complete>
+                <observers>
+                    <st_sphinxsearch_mage_catalogsearch_index_complete>
+                        <class>St_SphinxSearch_Model_Observer</class>
+                        <method>mageCatalogSearchIndexComplete</method>
+                    </st_sphinxsearch_mage_catalogsearch_index_complete>
+                </observers>
+            </catalogsearch_index_process_complete>
+        </events>
+    </global>
+</config>
