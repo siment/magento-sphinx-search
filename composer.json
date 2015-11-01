@@ -13,5 +13,11 @@
   "require": {
     "magento-hackathon/magento-composer-installer": "*",
     "siment/sphinxql-query-builder": "1.0.1.1"
+  },    
+  "repositories": {
+    "SphinxQL-Query-Builder": {
+      "type": "vcs",
+        "url": "git@github.com:siment/SphinxQL-Query-Builder.git"
+      }
   }
 }
