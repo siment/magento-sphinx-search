@@ -1,7 +1,7 @@
 {
   "name": "siment/magento-sphinx-search",
   "type": "magento-module",
-  "license": "MIT",
+  "license": "Apache 2.0",
   "description": "Enables Magento sites to use the SphinxSearch engine and index for searches",
   "homepage": "https://github.com/siment/magento-sphinx-search",
   "authors": [
