@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+ * @category    St
+ * @package     St_SphinxSearch
+ * @author      Simen Thorsrud <simen.thorsrud@gmail.com>
+ * @license     http://www.apache.org/licenses/LICENSE-2.0
+-->
+<config>
+  <modules>
+    <St_SphinxSearch>
+      <active>true</active>
+      <codePool>community</codePool>
+    </St_SphinxSearch>
+  </modules>
+</config>
