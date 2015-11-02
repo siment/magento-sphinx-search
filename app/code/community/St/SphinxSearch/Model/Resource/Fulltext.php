@@ -21,34 +21,17 @@
  */
 
 /**
- * Class St_SphinxSearch_Model_Observer
+ * Class St_SphinxSearch_Model_Resource_Fulltext
  */
-class St_SphinxSearch_Model_Observer
+class St_SphinxSearch_Model_Resource_Fulltext
 {
-
     /**
-     * This is run after catalogsearch_index_process_complete
+     * Init resource model
      *
-     * @event catalogsearch_index_process_complete
-     * @param Varien_Event_Observer $eventObserver
      */
-    public function mageCatalogSearchIndexComplete(Varien_Event_Observer $eventObserver)
+    protected function _construct()
     {
-
-        // @todo: check if this functionality is enabled
-
-        /** @var St_SphinxSearch_Model_Indexer $indexer */
-        $indexer = Mage::getModel('st_sphinxsearch/indexer');
-
-        $fulltextEngine = Mage::getResourceModel('st_sphinxsearch/fulltext_engine');
-
-        $tableName = $fulltextEngine->getTable('catalog_fulltext');
-
-
-        $t=1;
-
-        // $indexer->reindexAll();
-
-        return $this;
+        $this->_init('st_sphinxsearch/catalog_fulltext', 'product_id');
+        $this->_engine = Mage::helper('catalogsearch')->getEngine();
     }
 }

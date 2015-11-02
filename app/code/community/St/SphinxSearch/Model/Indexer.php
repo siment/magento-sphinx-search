@@ -26,11 +26,22 @@
 class St_SphinxSearch_Model_Indexer
 {
 
+    /** @var null|array Array of searchable attributes */
+    protected $_searchableAttributes = null;
+
     /**
      * Reindex all indexes associated with Sphinx
      */
     public function reindexAll()
     {
+
+        //@todo: indexers should be dynamically injected. Probable via `$this->getIndeces()`
+        /** @var St_SphinxSearch_Model_Fulltext $fulltextIndex */
+        $fulltextIndex = Mage::getModel('st_sphinxsearch/fulltext');
+
+        $fulltextIndex->rebuildIndex();
+
+        return;
         /** @var Mage_Core_Model_Resource $resourceSingleton */
         $resourceSingleton = Mage::getSingleton('core/resource');
 
@@ -52,5 +63,26 @@ class St_SphinxSearch_Model_Indexer
 
         $writeAdapater->query($sql);
         $t=1;
+    }
+
+    /**
+     * Retrieve searchable attributes list
+     *
+     * @see \Mage_CatalogSearch_Model_Indexer_Fulltext::_getSearchableAttributes
+     * @return array
+     */
+    protected function _getSearchableAttributes()
+    {
+        if (is_null($this->_searchableAttributes)) {
+            /** @var $attributeCollection Mage_Catalog_Model_Resource_Product_Attribute_Collection */
+            $attributeCollection = Mage::getResourceModel('catalog/product_attribute_collection');
+            $attributeCollection->addIsSearchableFilter();
+
+            foreach ($attributeCollection as $attribute) {
+                $this->_searchableAttributes[] = $attribute->getAttributeCode();
+            }
+        }
+
+        return $this->_searchableAttributes;
     }
 }

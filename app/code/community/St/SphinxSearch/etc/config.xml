@@ -38,6 +38,14 @@
                 <class>St_SphinxSearch_Model</class>
                 <resourceModel>st_sphinxsearch_resource</resourceModel>
             </st_sphinxsearch>
+            <st_sphinxsearch_resource>
+                <class>St_SphinxSearch_Model_Resource</class>
+                <entities>
+                    <catalog_fulltext>
+                        <table>st_sphinxsearch_catalog_fulltext</table>
+                    </catalog_fulltext>
+                </entities>
+            </st_sphinxsearch_resource>
         </models>
         <resources>
             <st_sphinxsearch_setup>
@@ -58,4 +66,11 @@
             </catalogsearch_index_process_complete>
         </events>
     </global>
+    <default>
+        <catalog>
+            <search>
+                <engine>st_sphinxsearch/fulltext_engine</engine>
+            </search>
+        </catalog>
+    </default>
 </config>
