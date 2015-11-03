@@ -46,6 +46,11 @@
                     </catalog_fulltext>
                 </entities>
             </st_sphinxsearch_resource>
+            <catalogsearch_resource>
+                <rewrite>
+                    <fulltext>St_SphinxSearch_Model_Resource_Fulltext</fulltext>
+                </rewrite>
+            </catalogsearch_resource>
         </models>
         <resources>
             <st_sphinxsearch_setup>

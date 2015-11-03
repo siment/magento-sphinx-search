@@ -20,6 +20,8 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
+// @TODO document or automatically create directory for indeces. default path is $mage_root/var/data
+
 /** @var St_SphinxSearch_Model_Resource_Setup $installer */
 $installer = $this;
 
