@@ -52,25 +52,6 @@ class St_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_R
      */
     public function prepareResult($object, $queryText, $query)
     {
-
-        $conn = new Connection();
-        $conn->setParams(array('host' => '127.0.0.1', 'port' => 9306));
-
-        /** @var SphinxQL $query */
-        $query = SphinxQL::create($conn)->select('*')
-            ->from('fulltext')
-            ->option('ranker', 'bm25')
-            ->option('field_weights', SphinxQL::expr('(name=7, attributes=3, data_index=1)'))
-            ->option('cutoff', 5000)
-            ->option('max_matches', 1000)
-            ->limit(0, 100)
-            ->match('*', $queryText)
-        ;
-
-        $result = $query->execute();
-
-
-        return $this;
         $adapter = $this->_getWriteAdapter();
         if (!$query->getIsProcessed()) {
             $searchType = $object->getSearchType($query->getStoreId());
@@ -124,12 +105,45 @@ class St_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_R
                 $select->where($where);
             }
 
+            /*
             $sql = $adapter->insertFromSelect($select,
                 $this->getTable('catalogsearch/result'),
                 array(),
                 Varien_Db_Adapter_Interface::INSERT_ON_DUPLICATE);
             $adapter->query($sql, $bind);
+            */
 
+            $conn = new Connection();
+            $conn->setParams(array('host' => '127.0.0.1', 'port' => 9306));
+
+            /** @var SphinxQL $sphinxQuery */
+            $sphinxQuery = SphinxQL::create($conn)->select(array('*', SphinxQL::expr('WEIGHT()')))
+                ->from('fulltext')
+                ->option('ranker', 'bm25')
+                ->option('field_weights', SphinxQL::expr('(name=7, attributes=3, data_index=1)'))
+                ->option('cutoff', 5000)
+                ->option('max_matches', 1000)
+                ->limit(0, 100)
+                ->match('*', $queryText)
+            ;
+
+            $results = $sphinxQuery->execute();
+
+            foreach ($results as $result) {
+                // Ensure we log query results into the Magento table.
+                $sql = sprintf("INSERT INTO {$this->getTable('catalogsearch/result')} "
+                    . " (query_id, product_id, relevance) VALUES "
+                    . " (%d, %d, %f) "
+                    . " ON DUPLICATE KEY UPDATE relevance = %f",
+                    $query->getId(),
+                    $result['id'],
+                    $result['weight()']/1000,
+                    $result['weight()']/1000
+                );
+                $this->_getWriteAdapter()->query($sql, $bind);
+            }
+
+            $conn->close();
             $query->setIsProcessed(1);
         }
 

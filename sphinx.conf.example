@@ -32,7 +32,7 @@ source magento_fulltext
 
 	# main document fetch query
 	# mandatory, integer document ID field MUST be the first selected column
-	sql_query      = SELECT product_id, name, name_attributes, category, data_index, sku FROM sphinx_catalogsearch_fulltext
+	sql_query      = SELECT product_id, name, attributes, data_index, sku FROM st_sphinxsearch_catalog_fulltext
 }
 
 #############################################################################
@@ -40,10 +40,11 @@ source magento_fulltext
 #############################################################################
 
 index fulltext {
+	docinfo = extern
     source = magento_fulltext
-    path   = /var/www/magento/var/data/production.sphinx.index     # Feel free to change
+    path   = /var/www/magento/htdocs/var/data/production.sphinx.index     # Feel free to change
 
-    morphology   = stem_en     #, metaphone # You can add metaphone morphology if you want.
+    morphology   = metaphone     #, stem_en # You can add stem_en morphology if you want.
     min_word_len = 1           # Indexes all words
     blend_chars  = -           # This presumes people won't type a hyphen into the search bar: quite likely
     blend_mode   = trim_both   #
