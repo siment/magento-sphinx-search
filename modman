@@ -1,2 +1,3 @@
 app/code/community/St/SphinxSearch app/code/community/St/SphinxSearch
 app/etc/modules/St_SphinxSearch.xml app/etc/modules/St_SphinxSearch.xml
+shell/st/sphinxsearch shell/st/sphinxsearch

@@ -20,6 +20,9 @@
  * @license     http://www.apache.org/licenses/LICENSE-2.0
  */
 
+use Foolz\SphinxQL\SphinxQL;
+use Foolz\SphinxQL\Connection;
+
 /**
  * Class St_SphinxSearch_Model_Resource_Fulltext
  */
@@ -34,9 +37,9 @@ class St_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_R
         /* @todo:   Should I really use different table than parent? Depends how architecture
          *          becomes in the end
          */
-        // $this->_init('st_sphinxsearch/catalog_fulltext', 'product_id');
-        // $this->_engine = Mage::helper('catalogsearch')->getEngine();
-        parent::_construct();
+        $this->_init('st_sphinxsearch/catalog_fulltext', 'product_id');
+        $this->_engine = Mage::helper('catalogsearch')->getEngine();
+        // parent::_construct();
     }
 
     /**
@@ -49,6 +52,25 @@ class St_SphinxSearch_Model_Resource_Fulltext extends Mage_CatalogSearch_Model_R
      */
     public function prepareResult($object, $queryText, $query)
     {
+
+        $conn = new Connection();
+        $conn->setParams(array('host' => '127.0.0.1', 'port' => 9306));
+
+        /** @var SphinxQL $query */
+        $query = SphinxQL::create($conn)->select('*')
+            ->from('fulltext')
+            ->option('ranker', 'bm25')
+            ->option('field_weights', SphinxQL::expr('(name=7, attributes=3, data_index=1)'))
+            ->option('cutoff', 5000)
+            ->option('max_matches', 1000)
+            ->limit(0, 100)
+            ->match('*', $queryText)
+        ;
+
+        $result = $query->execute();
+
+
+        return $this;
         $adapter = $this->_getWriteAdapter();
         if (!$query->getIsProcessed()) {
             $searchType = $object->getSearchType($query->getStoreId());
